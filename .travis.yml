@@ -1,0 +1,28 @@
+language: generic
+sudo: required
+
+services:
+    - docker 
+
+before_install:
+    - docker build -t ravik775/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true ravik775/react-test npm test
+
+after_success:
+    - docker build -t ravik775/multi-container-client ./client
+    - docker build -t ravik775/multi-container-nginx ./nginx
+    - docker build -t ravik775/multi-container-server ./server
+    - docker build -t ravik775/multi-container-worker ./worker
+
+    #Docker login 
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    #Docker Pusj
+    - docker push ravik775/multi-container-client
+    - docker push ravik775/multi-container-nginx
+    - docker push ravik775/multi-container-server
+    - docker push ravik775/multi-container-worker
+
+    
+    
