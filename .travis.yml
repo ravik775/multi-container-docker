@@ -24,5 +24,19 @@ after_success:
     - docker push ravik775/multi-container-server
     - docker push ravik775/multi-container-worker
 
+    deploy:
+        edge: true
+        provider: elasticbeanstalk
+        region: "us-east-2"
+        app: "multi-docker"
+        env: "MultiDocker-env"
+        bucket_name: ""
+        bucket_path: "docker-multi"
+        on:
+            branch: master
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: "$AWS_SECRET_KEY"
+        
+        
     
     

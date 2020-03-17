@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "ravik775/multi-container-client",
+            "hostname": "client",
+            "essential": false
+            
+        },
+        {
+            "name": "server",
+            "image": "ravik775/multi-container-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "ravik775/multi-container-worker",
+            "hostname": "worker_aws",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "ravik775/multi-container-nginx",
+            "hostname": "nginx_aws",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"]
+        }
+    ]
+}
